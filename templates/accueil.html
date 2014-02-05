@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel=stylesheet type="text/css" href="{{ STATIC_URL }}index.css">
+		<script type="text/javascript" src="{{ STATIC_URL }}jquery-2.0.3.min.js"></script>
+		<script language="javascript" type="text/javascript">
+		
+		$(document).ready(function () {
+		
+			var panelopened = false;
+			var linkopened = false;
+			$('#links_gotop').hide();
+			$('#avai_news').hide();
+		
+			$('.new').click(function(e) {  
+				$(this).fadeOut('fast', function(){
+					$(this).remove();
+				});
+			});
+			
+			$('#links_gotop').click(function(e) {  
+				$('html, body').animate({ scrollTop: 0 }, 400);
+			});
+			
+			$('#links_gobot').click(function(e) {  
+				$('html, body').animate({ scrollTop: $(document).height() }, 400);
+			});
+			
+			$('#links_opener').click(function(){
+				if ( linkopened ) {
+					linkopened = false;
+			    	$('#links').animate({ "right": "-70px" }, 'fast');
+			    	$('#img_links_opener').attr("src", "{{ STATIC_URL }}flechegauche.png");
+			    } else {
+			    	linkopened = true;
+			    	$('#links').animate({ "right": "20px" }, 'fast');
+			    	$('#img_links_opener').attr("src", "{{ STATIC_URL }}flechedroite.png");
+			    }
+			});
+			
+			$('.part_filter').click(function() {
+				var classname = $(this).attr('class').split(' ')[1];
+				var check = $(this).is(':checked');
+				
+				$('.' + classname).each(function() {
+				    $(this).prop('checked', check);
+				});
+			});
+			
+			$('#panel_opener').click(function(){
+				if ( panelopened ) {
+					panelopened = false;
+			    	$('#panel').animate({ "left": "-400" }, 300);
+			    	$('#img_panel_opener').attr("src", "{{ STATIC_URL }}flechedroite.png");
+			    } else {
+			    	panelopened = true;
+			    	$('#panel').animate({ "left": "0" }, 300);
+			    	$('#img_panel_opener').attr("src", "{{ STATIC_URL }}flechegauche.png");
+			    }
+			});
+			
+			$(window).on('scroll', function() {
+			    var scrollTop = $(this).scrollTop();
+			    if ( scrollTop != 0 ) {
+			    	$('#links_gotop').show();
+			    } else {
+			    	$('#links_gotop').hide();
+			    }
+			    if(scrollTop + $(window).height() == $(document).height()) {
+			    	$('#links_gobot').hide();
+			    } else {
+			    	$('#links_gobot').show();
+			    }
+			});
+			
+		  	var win = $(window);
+	      	var col_numb =  parseInt( win.width() / 5 * 4 / 310 );
+	        $('#news').width( 310 * col_numb );
+	        
+	        $('#avai_news').click(function() {
+	        	last_id = $("#news div:nth-child(2)").attr('id');
+	        	$.ajax({
+				    type: "POST",
+				    url: '/get_news/',
+				    data: { 
+				    	last_id: 3,
+				    	static_url: "{{ STATIC_URL }}"
+				    }
+				}).done(function(msg){
+					$('#avai_news').slideUp(500, function(){
+						$('#avai_news').after(msg);
+						$('.new').each(function() {
+					    	$(this).slideDown(1000);
+						});
+					
+					});
+
+				});
+			});
+	        
+		});
+		
+		$(window).on('resize', function(){
+	      var win = $(this);
+	      var col_numb =  parseInt( win.width() / 5 * 4 / 310 );
+	      $('#news').width( 310 * col_numb );
+		});
+		
+		$(window).bind('focus', function() {
+			last_id = $("#news div:nth-child(2)").attr('id');
+			$.ajax({
+			    type: "POST",
+			    url: '/refresh/',
+			    data: { 
+			    	last_id: 3,
+			    }
+			}).done(function(msg){
+				$('#avai_news').html(msg);
+				$('#avai_news').slideDown(1000);
+			});
+		});
+		
+		</script>
+	</head>
+	<body>
+		{% csrf_token %}
+		<div id="panel_opener"><img id="img_panel_opener" src="{{ STATIC_URL }}flechedroite.png" /></div>
+	
+		<div id="panel" class="panel_move">
+			<div id="title_panel">Filtres</div>
+			
+			<div id="part_sport"><label><input class="part_filter filter_sport" type="checkbox" name="checkbox" value="value" checked> Sports</label></div>
+			
+			<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked> Football</label></div>
+			<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked> Tennis</label></div>
+			<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked> Basketball</label></div>
+			<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked> Autres</label></div>
+			
+			<div id="part_art"><label><input class="part_filter filter_art" type="checkbox" name="checkbox" value="value" checked> Articles du web</label></div>
+			
+			<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked> L'équipe</label></div>
+			<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked> Sports.fr</label></div>
+			<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked> Yahoo sport</label></div>
+			<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked> Text</label></div>
+			
+			<div id="part_fb"><label><input class="part_filter filter_fb" type="checkbox" name="checkbox" value="value" checked> Facebook</label></div>
+			
+			<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked> L'équipe</label></div>
+			<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked> Autre</label></div>
+			<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked> Text</label></div>
+			<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked> Text</label></div>
+			
+			<div id="part_tw"><label><input class="part_filter filter_tw" type="checkbox" name="checkbox" value="value" checked> Twitter</label></div>
+			
+			<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked> Blabla</label></div>
+			<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked> BliBli</label></div>
+			<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked> Tohj</label></div>
+			<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked> Text</label></div>
+			
+			<input id="applicate" type="button" value="Appliquer"></input>
+		</div>
+		
+		<div id="links_opener"><img id="img_links_opener" src="{{ STATIC_URL }}flechegauche.png" /></div>
+		
+		<div id="links" class="links_move">
+			<a class="link" href="http://www.facebook.com/" target="_blank"><img src="{{ STATIC_URL }}facebook.png" /></a>
+			<a class="link" href="http://www.twitter.com/" target="_blank"><img src="{{ STATIC_URL }}twitter.png" /></a>
+			<a class="link" href="http://www.lequipe.com/" target="_blank"><img src="{{ STATIC_URL }}l équipe.png" /></a>
+			<a class="link" href="http://www.sports.fr/" target="_blank"><img src="{{ STATIC_URL }}sports.png" /></a>
+			<a class="link" href="http://fr.sports.yahoo.com/" target="_blank"><img src="{{ STATIC_URL }}yahoo sport.jpeg" /></a>
+		</div>
+		
+		<div id="links_gotop"><img src="{{ STATIC_URL }}flechehaut.png" /></div>
+		<div id="links_gobot"><img src="{{ STATIC_URL }}flechebas.png" /></div>
+
+		<div id="news">
+			<div id="avai_news">
+				2 Nouvelles Actus !
+			</div>
+			{% for article in last_articles %}
+				{% if article.type == "article" %}
+					<div class="new" id="{{ article.id }}">
+						<div class="title-new">{{ article.titre }}</div>
+						<div class="origine-new"><div class="origine-name">{{ article.origine }}</div><img class="favicon" src="{{ STATIC_URL }}favicon/{{ article.origine }}.png"/></div>
+						<div class="date-new">{{ article.date|date:"H:i" }}</div>
+						<div class="bottom-bar"></div>
+						<img class="img-new" src="{{ article.image }}"/>
+					</div>
+				{% endif %}
+				{% if article.type == "twitter" %}
+					<div class="new" id="{{ article.id }}">
+						<div class="title">{{ article.titre }}</div>
+						<div class="origine">{{ article.origine }}</div>
+						<img class="twitter-img" src="{{ STATIC_URL }}twitter.png"/>
+						<img class="open-quote" src="{{ STATIC_URL }}open-quote.png"/>
+						<img class="close-quote" src="{{ STATIC_URL }}close-quote.png"/>
+						<div class="date-tw-new">{{ article.date|date:"H:i" }}</div>
+						<div class="bottom-tw-bar"></div>
+					</div>
+				{% endif %}
+				{% if article.type == "facebook" %}
+					<div class="new" id="{{ article.id }}">
+						<div class="title">{{ article.titre }}</div>
+						<div class="origine">{{ article.origine }}</div>
+						<img class="facebook-img" src="{{ STATIC_URL }}facebook.png"/>
+						<img class="open-quote" src="{{ STATIC_URL }}open-quote.png"/>
+						<img class="close-quote" src="{{ STATIC_URL }}close-quote.png"/>
+						<div class="date-fb-new">{{ article.date|date:"H:i" }}</div>
+						<div class="bottom-fb-bar"></div>
+					</div>
+				{% endif %}
+        	{% endfor %}
+		</div>
+	</body>
+</html>
