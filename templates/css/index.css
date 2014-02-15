@@ -40,11 +40,11 @@ body{
 	margin-left: 30px;
 }
 #title_panel{
-	font-size: 20px;
+	font-size: 24px;
 	font-weight: bold;
 	width: 100%;
-	height: 40px;
-	padding-top: 10px;
+	height: 30px;
+	padding-top: 20px;
 	text-align: center;
 }
 #applicate{
@@ -95,13 +95,13 @@ a.link img{
 /* --------- REFRESH ---------- */
 
 #avai_news{
-	width: 98%;
+	width: 80%;
 	text-align: center;
 	margin: 0 auto 15px auto;
 	padding-top: 5px;
 	font-size: 30px;
 	height: 40px;
-	color: white;
+	color: grey;
 }
 #avai_news:hover{
 	background-color: rgba(0,0,0,0.6);
@@ -110,10 +110,22 @@ a.link img{
 #avai_news:active { 
     
 }
+#img_refresh{
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 46px;
+	height: 46px;
+}
+#img_refresh:hover{
+	background-color: rgba(0,0,0,0.6);
+	cursor: pointer;
+}
 
 /* --------- ARTICLES ---------- */
 
 #news{
+	position: relative;
 	margin: auto;
 	padding-top: 20px;
 	z-index: 10;

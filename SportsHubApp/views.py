@@ -25,8 +25,8 @@ def refresh(request):
     
     nb_new_article = Article.objects.filter(id__gt=int(request.POST.get('last_id', False))).count()
     sended_text = str(nb_new_article) + " Nouvelles Actus !"
-    
-    return HttpResponse(sended_text)
+    if nb_new_article != 0:
+        return HttpResponse(sended_text)
 
 @csrf_exempt
 def get_news(request):
