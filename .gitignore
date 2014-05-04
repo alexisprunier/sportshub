@@ -1,3 +1,4 @@
 /settings.pyc
 /urls.pyc
 /wsgi.pyc
+*.pyc

@@ -22,19 +22,29 @@ body{
 	width: 50px;
 	height: 50px;
 }
-#panel {
-	height: 600px;
+#panel{
 	width: 20%;
 	background-color: #D8D8D8;
-	width: 200px;
+	width: 300px;
 	position: fixed;
 	top: 120px;
 	left: -400px;
 	transition: all 0.3s linear;
 	z-index: 20;
+	border: solid 2px rgba(0,0,0,0.6);
+}
+#panel_filter{
+	overflow: auto;
+	height: 400px;
+	background-color: rgba(0,0,0,0.1);
+	padding: 10px 10px 20px 10px;
+	border: solid 1px rgba(0,0,0,0.6);
 }
 .part_filter{
-	margin: 10px 0 10px 10px;
+	margin: 25px 0 10px 10px;
+}
+label.part_label{
+	font-size: 20px;
 }
 .filter{
 	margin-left: 30px;
@@ -44,14 +54,15 @@ body{
 	font-weight: bold;
 	width: 100%;
 	height: 30px;
-	padding-top: 20px;
+	padding-top: 15px;
+	padding-bottom: 10px;
 	text-align: center;
 }
 #applicate{
-	position: absolute;
-	bottom: 10px;
-	left: 50px;
-	width: 100px;
+	margin: 10px 0px 10px 170px;
+	font-size: 20px;
+	font-family: helvetica;
+	font-variant:small-caps;
 }
 
 /* --------- LINKS ---------- */
@@ -143,6 +154,7 @@ a.link img{
 	background-color: #F3F3F3;
 }
 .img-new{	
+	margin-top: 52px;
 	position: absolute;
 	max-width: 300px;
 	max-height: 240px;
@@ -193,12 +205,12 @@ a.link img{
 }
 .title{
 	width: 220px;
-	height: 90px;
+	height: 120px;
 	margin: 25px 0 0 40px;
 	font-size: 16px;
 	text-align: center;
 	font-style: italic;
-	color: #777;
+	color: #222;
 	text-overflow: ellipsis;
 	z-index: 3;
 }
@@ -210,21 +222,21 @@ a.link img{
 	top: 0px;
 	width: 100%;
 	height: 50px;
-	font-size: 16px;
 	text-align: center;
-	font-style: italic;
-	color: #777;
-	text-overflow: ellipsis;
+	color: #222;
+	overflow: hidden;
 	z-index: 3;
-	background-color: rgba(255,255,255,0.8);
 }
 .origine{
+	font-family: arial;
 	width: 120px;
 	height: 30px;
-	margin: 10px 0 0 140px;
+	margin: 30px 0 0 165px;
+	font-weight: bold;
 	font-size: 18px;
-	color: #444;
+	color: black;
 	z-index: 3;
+	text-align: center;
 }
 .origine-new{
 	position: absolute;
@@ -273,6 +285,7 @@ a.link img{
 	left: 30px;
 	font-size: 40px;
 	z-index: 3;
+	color: black;
 }
 .date-tw-new{
 	font-family: "clock-font";
@@ -290,62 +303,43 @@ a.link img{
 	font-size: 40px;
 	color: #3B5998;
 }
+.Football{
+	background-color: #00CD03;
+	opacity: 0.7;
+}
+.Basketball{
+	background-color: #FE8300;
+	opacity: 0.7;
+}
+.Tennis{
+	background-color: #FFFD4D;
+	opacity: 0.7;
+}
+.Ski{
+	background-color: #91FFFF;
+	opacity: 0.7;
+}
+.Auto-Moto{
+	background-color: #FF0F0F;
+	opacity: 0.7;
+}
+.Rugby{
+	background-color: #B05806;
+	opacity: 0.7;
+}
+.Handball{
+	background-color: #FFBC00;
+	opacity: 0.7;
+}
+.Natation{
+	background-color: #006FFF;
+	opacity: 0.7;
+}
 
-
-
-
-
-
-
-.onoffswitch {
-    position: relative; width: 61px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-}
-.onoffswitch-checkbox {
-    display: none;
-}
-.onoffswitch-label {
-    display: block; overflow: hidden; cursor: pointer;
-    border: 0px solid #999999; border-radius: 0px;
-}
-.onoffswitch-inner {
-    width: 200%; margin-left: -100%;
-    -moz-transition: margin 0.3s ease-in 0s; -webkit-transition: margin 0.3s ease-in 0s;
-    -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
-}
-.onoffswitch-inner > div {
-    float: left; position: relative; width: 50%; height: 19px; padding: 0; line-height: 19px;
-    font-size: 13px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
-}
-.onoffswitch-inner .onoffswitch-active {
-    padding-left: 10px;
-    background-color: #C2C2C2; color: #FFFFFF;
-}
-.onoffswitch-inner .onoffswitch-inactive {
-    padding-right: 10px;
-    background-color: #C2C2C2; color: #FFFFFF;
-    text-align: right;
-}
-.onoffswitch-switch {
-    width: 33px; margin: 0px; text-align: center; 
-    border: 0px solid #999999;border-radius: 0px; 
-    position: absolute; top: 0; bottom: 0;
-}
-.onoffswitch-active .onoffswitch-switch {
-    background: #19E348; left: 0;
-}
-.onoffswitch-inactive .onoffswitch-switch {
-    background: #A1A1A1; right: 0;
-}
-.onoffswitch-active .onoffswitch-switch:before {
-    content: " "; position: absolute; top: 0; left: 33px; 
-    border-style: solid; border-color: #19E348 transparent transparent #19E348; border-width: 9px 6px;
-}
-.onoffswitch-inactive .onoffswitch-switch:before {
-    content: " "; position: absolute; top: 0; right: 33px; 
-    border-style: solid; border-color: transparent #A1A1A1 #A1A1A1 transparent; border-width: 9px 6px;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
+#ads{
+	position: fixed;
+    left: 50%;
+    bottom: 0px;
+    z-index: 101;
+    margin-left: -364px;
 }

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>Sports Hub</title>
 		<link rel=stylesheet type="text/css" href="{{ STATIC_URL }}index.css">
 		<script type="text/javascript" src="{{ STATIC_URL }}jquery-2.0.3.min.js"></script>
 		<script language="javascript" type="text/javascript">
-		
 		$(document).ready(function () {
 		
 			var panelopened = false;
@@ -15,10 +15,31 @@
 			$('#links_gotop').hide();
 			$('#img_refresh').click(function() { refresh(); });
 	        $('#news').width( 310 * col_numb );
+	        
 			$('#links_gotop').click(function(e) { $('html, body').animate({ scrollTop: 0 }, 400); });
 			$('#links_gobot').click(function(e) { $('html, body').animate({ scrollTop: $(document).height() }, 400); });
 			$(window).bind('focus', function() { refresh(); });
 			$(window).bind('blur', function() { refresh(); });
+			
+			$('#applicate').click(function(e) { 
+				filters = JSON.stringify(get_filters());
+	        	$.ajax({
+				    type: "POST",
+				    url: '/apply_news/',
+				    data: {
+				    	static_url: "{{ STATIC_URL }}",
+				    	filters: filters
+				    }
+				}).done(function(msg){
+					$('#avai_news').css('color', 'grey');
+					$('.new').remove()
+					$('#img_refresh').after(msg);
+					$('.new').each(function() {
+				    	$(this).fadeIn("slow");
+					});
+				});
+			});
+			
 			
 			$('#links_opener').click(function(){
 				if ( linkopened ) {
@@ -45,7 +66,7 @@
 			    	$('#img_panel_opener').attr("src", "{{ STATIC_URL }}flechedroite.png");
 			    } else {
 			    	panelopened = true;
-			    	$('#panel').animate({ "left": "0" }, 300);
+			    	$('#panel').animate({ "left": "20" }, 300);
 			    	$('#img_panel_opener').attr("src", "{{ STATIC_URL }}flechegauche.png");
 			    }
 			});
@@ -66,25 +87,26 @@
 			
 	        $('#avai_news').click(function() {
 	        	if ( document.getElementById('avai_news').innerHTML != '0 Nouvelles Actus !' ) {
+	        		filters = JSON.stringify(get_filters());
 		        	last_id = $("#news div:nth-child(3)").attr('id');
 		        	$.ajax({
 					    type: "POST",
 					    url: '/get_news/',
 					    data: { 
-					    	last_id: 3,
-					    	static_url: "{{ STATIC_URL }}"
+					    	last_id: last_id,
+					    	static_url: "{{ STATIC_URL }}",
+					    	filters: filters
 					    }
 					}).done(function(msg){
 						$('#avai_news').css('color', 'grey');
 						$('#avai_news').html('0 Nouvelles Actus !');
 						$('#img_refresh').after(msg);
 						$('.new').each(function() {
-					    	$(this).slideDown(1000);
+					    	$(this).fadeIn("slow");
 						});
 					});
 				}
 			});
-	        
 		});
 		
 		$(window).on('resize', function(){
@@ -94,36 +116,42 @@
 		});
 		
 		function refresh(){
-			last_id = $("#news div:nth-child(3)").attr('id');
+			last_id = $("#news a div:nth-child(1)").attr('id');
+			alert(last_id);
+			filters = JSON.stringify(get_filters());
 			$.ajax({
 			    type: "POST",
 			    url: '/refresh/',
 			    data: { 
-			    	last_id: 2,
+			    	last_id: last_id,
+			    	filters: filters,
 			    }
-			}).done(function(msg){
-				$('title').html("Sports Hub ["+msg+"]");
-				$('#avai_news').css('color', 'white');
+			}).done(function(msg, news){
 				$('#avai_news').html(msg);
 				$('#avai_news').slideDown(1000);
+				if (news == true){
+					$('title').html("Sports Hub ["+msg+"]");
+					$('#avai_news').css('color', 'white');
+				}
 			});
 		}
 		
 		function get_filters(){
 			var filters = {};
 			$('.part_filter').each(function() {
-				var classname = $(this).className.split(' ')[1];
-				var checked = ''
-		    	$('.'+classname).each(function() {
-		    		if ($(this).is(':checked')) {
-		    			checked += $(this).className;
-		    		}
-		    	});
-		    	filters.oui = checked;
+				if ($(this).is(':checked')) {
+					var classname = $(this).attr('class').split(' ')[1];
+					var checked = '';
+			    	$('.'+classname).each(function() {
+			    		if ($(this).is(':checked')) {
+			    			checked += $(this).parent().text() + ";";
+			    		}
+			    	});
+			    	filters[$(this).parent().text()] = checked;
+			    }
 			});
-			alert(filters)
+			return filters;
 		}
-		
 		</script>
 	</head>
 	<body>
@@ -132,35 +160,49 @@
 	
 		<div id="panel" class="panel_move">
 			<div id="title_panel">Filtres</div>
-			
-			<div id="part_sport"><label><input class="part_filter filter_sport" type="checkbox" name="checkbox" value="value" checked> Sports</label></div>
-			
-			<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked> Football</label></div>
-			<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked> Tennis</label></div>
-			<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked> Basketball</label></div>
-			<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked> Autres</label></div>
-			
-			<div id="part_art"><label><input class="part_filter filter_art" type="checkbox" name="checkbox" value="value" checked> Articles du web</label></div>
-			
-			<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked> L'équipe</label></div>
-			<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked> Sports.fr</label></div>
-			<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked> Yahoo sport</label></div>
-			<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked> Text</label></div>
-			
-			<div id="part_fb"><label><input class="part_filter filter_fb" type="checkbox" name="checkbox" value="value" checked> Facebook</label></div>
-			
-			<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked> L'équipe</label></div>
-			<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked> Autre</label></div>
-			<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked> Text</label></div>
-			<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked> Text</label></div>
-			
-			<div id="part_tw"><label><input class="part_filter filter_tw" type="checkbox" name="checkbox" value="value" checked> Twitter</label></div>
-			
-			<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked> Blabla</label></div>
-			<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked> BliBli</label></div>
-			<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked> Tohj</label></div>
-			<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked> Text</label></div>
-			
+			<div id="panel_filter">
+				<div id="part_sport"><label class="part_label"><input class="part_filter filter_sport" type="checkbox" name="checkbox" value="value" checked>Sports</label></div>
+				
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Football</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Tennis</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Basketball</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Rugby</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Handball</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Auto-Moto</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Judo</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Ski</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Athlétisme</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Natation</label></div>
+				<div class="filter"><label><input class="filter_sport" type="checkbox" name="checkbox" value="value" checked>Autres</label></div>
+				
+				<div id="part_art"><label class="part_label"><input class="part_filter filter_art" type="checkbox" name="checkbox" value="value" checked>Articles</label></div>
+				
+				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>L'équipe</label></div>
+				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Sports.fr</label></div>
+				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Yahoo Sport</label></div>
+				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Eurosport</label></div>
+				
+				<div id="part_fb"><label class="part_label"><input class="part_filter filter_fb" type="checkbox" name="checkbox" value="value" checked>Facebook</label></div>
+				
+				<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked>beIN SPORTS France</label></div>
+				<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked>Equipe de France de Football</label></div>
+				<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked>Equipe de France de Basketball</label></div>
+				<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked>Equipe de France de Handball</label></div>
+				<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked>Intersport</label></div>
+				<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked>Decathlon</label></div>
+				<div class="filter"><label><input class="filter_fb" type="checkbox" name="checkbox" value="value" checked>Sport2000</label></div>
+				
+				<div id="part_tw"><label class="part_label"><input class="part_filter filter_tw" type="checkbox" name="checkbox" value="value" checked>Twitter</label></div>
+				
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>Gael_Monfils</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>airlavillenie</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>julienbenneteau</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>nicolas88batum</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>MATUIDIBlaise</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>JrmeFernandez</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>sebchabal</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>NKARABATIC</label></div>
+			</div>
 			<input id="applicate" type="button" value="Appliquer"></input>
 		</div>
 		
@@ -181,16 +223,22 @@
 			<div id="avai_news">0 Nouvelles Actus !</div>
 			<img id="img_refresh" src="{{ STATIC_URL }}refresh.png" />
 			{% for article in last_articles %}
-				{% if article.type == "article" %}
+				{% if article.type == "Articles" %}
+				<a href="{{ article.lien }}">
 					<div class="new" id="{{ article.id }}">
 						<div class="title-new">{{ article.titre }}</div>
 						<div class="origine-new"><div class="origine-name">{{ article.origine }}</div><img class="favicon" src="{{ STATIC_URL }}favicon/{{ article.origine }}.png"/></div>
 						<div class="date-new">{{ article.date|date:"H:i" }}</div>
-						<div class="bottom-bar"></div>
+						<div class="bottom-bar {{ article.sport }}"></div>
+						{% if article.image != "" %}
 						<img class="img-new" src="{{ article.image }}"/>
+						{% else %}
+						<img class="img-new" src="{{ STATIC_URL }}no-image.png"/>
+						{% endif %}
 					</div>
+				</a>
 				{% endif %}
-				{% if article.type == "twitter" %}
+				{% if article.type == "Twitter" %}
 					<div class="new" id="{{ article.id }}">
 						<div class="title">{{ article.titre }}</div>
 						<div class="origine">{{ article.origine }}</div>
@@ -201,7 +249,7 @@
 						<div class="bottom-tw-bar"></div>
 					</div>
 				{% endif %}
-				{% if article.type == "facebook" %}
+				{% if article.type == "Facebook" %}
 					<div class="new" id="{{ article.id }}">
 						<div class="title">{{ article.titre }}</div>
 						<div class="origine">{{ article.origine }}</div>
@@ -213,6 +261,17 @@
 					</div>
 				{% endif %}
         	{% endfor %}
+		</div>
+		<div id="ads">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			<!-- SportsHub -->
+			<ins class="adsbygoogle"
+			     style="display:inline-block;width:728px;height:90px"
+			     data-ad-client="ca-pub-1096088233292030"
+			     data-ad-slot="3684729504"></ins>
+			<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
 		</div>
 	</body>
 </html>

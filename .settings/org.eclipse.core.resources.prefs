@@ -1,3 +1,10 @@
 eclipse.preferences.version=1
+encoding//SportsHubScript/Articles/ArticleGetter.py=utf-8
+encoding//SportsHubScript/Articles/eurosport.py=utf-8
+encoding//SportsHubScript/Articles/lequipe.py=utf-8
+encoding//SportsHubScript/Articles/sports.py=utf-8
+encoding//SportsHubScript/Articles/yahoo.py=utf-8
 encoding//SportsHubScript/Facebook.py=utf-8
+encoding//SportsHubScript/Twitter.py=utf-8
 encoding//SportsHubScript/main.py=utf-8
+encoding/fabfile.py=utf-8
