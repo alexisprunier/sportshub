@@ -4,6 +4,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title>Sports Hub</title>
 		<link rel=stylesheet type="text/css" href="{{ STATIC_URL }}index.css">
+		<link rel=stylesheet type="text/css" href="{{ STATIC_URL }}index-normal.css">
 		<script type="text/javascript" src="{{ STATIC_URL }}jquery-2.0.3.min.js"></script>
 		<script language="javascript" type="text/javascript">
 		$(document).ready(function () {
@@ -20,6 +21,24 @@
 			$('#links_gobot').click(function(e) { $('html, body').animate({ scrollTop: $(document).height() }, 400); });
 			$(window).bind('focus', function() { refresh(); });
 			$(window).bind('blur', function() { refresh(); });
+			
+			$('#display_block').click(function() {
+				var oldlink = document.getElementsByTagName("link").item(1);
+				var newlink = document.createElement("link");
+		        newlink.setAttribute("rel", "stylesheet");
+		        newlink.setAttribute("type", "text/css");
+		        newlink.setAttribute("href", "/static/index-normal.css");
+		        document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
+			});
+			
+			$('#display_line').click(function() {
+				var oldlink = document.getElementsByTagName("link").item(1);
+				var newlink = document.createElement("link");
+		        newlink.setAttribute("rel", "stylesheet");
+		        newlink.setAttribute("type", "text/css");
+		        newlink.setAttribute("href", "/static/index-line.css");
+		        document.getElementsByTagName("head").item(0).replaceChild(newlink, oldlink);
+			});
 			
 			$('#applicate').click(function(e) { 
 				filters = JSON.stringify(get_filters());
@@ -39,7 +58,6 @@
 					});
 				});
 			});
-			
 			
 			$('#links_opener').click(function(){
 				if ( linkopened ) {
@@ -86,9 +104,9 @@
 			});
 			
 	        $('#avai_news').click(function() {
-	        	if ( document.getElementById('avai_news').innerHTML != '0 Nouvelles Actus !' ) {
+	        	if ( document.getElementById('avai_news').innerHTML != '0 Nouvelle(s) Actu(s) !' ) {
 	        		filters = JSON.stringify(get_filters());
-		        	last_id = $("#news div:nth-child(3)").attr('id');
+		        	last_id = $("#news a div:nth-child(1)").attr('id');
 		        	$.ajax({
 					    type: "POST",
 					    url: '/get_news/',
@@ -101,6 +119,7 @@
 						$('#avai_news').css('color', 'grey');
 						$('#avai_news').html('0 Nouvelles Actus !');
 						$('#img_refresh').after(msg);
+						$('title').html("Sports Hub");
 						$('.new').each(function() {
 					    	$(this).fadeIn("slow");
 						});
@@ -117,7 +136,6 @@
 		
 		function refresh(){
 			last_id = $("#news a div:nth-child(1)").attr('id');
-			alert(last_id);
 			filters = JSON.stringify(get_filters());
 			$.ajax({
 			    type: "POST",
@@ -126,10 +144,10 @@
 			    	last_id: last_id,
 			    	filters: filters,
 			    }
-			}).done(function(msg, news){
-				$('#avai_news').html(msg);
+			}).done(function(msg){
 				$('#avai_news').slideDown(1000);
-				if (news == true){
+				if (msg.charAt(0) != '0'){
+					$('#avai_news').html(msg);
 					$('title').html("Sports Hub ["+msg+"]");
 					$('#avai_news').css('color', 'white');
 				}
@@ -181,6 +199,11 @@
 				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Sports.fr</label></div>
 				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Yahoo Sport</label></div>
 				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Eurosport</label></div>
+				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Sport365</label></div>
+				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>France Football</label></div>
+				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Foot Mercato</label></div>
+				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Basket USA</label></div>
+				<div class="filter"><label><input class="filter_art" type="checkbox" name="checkbox" value="value" checked>Basket Session</label></div>
 				
 				<div id="part_fb"><label class="part_label"><input class="part_filter filter_fb" type="checkbox" name="checkbox" value="value" checked>Facebook</label></div>
 				
@@ -194,14 +217,14 @@
 				
 				<div id="part_tw"><label class="part_label"><input class="part_filter filter_tw" type="checkbox" name="checkbox" value="value" checked>Twitter</label></div>
 				
-				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>Gael_Monfils</label></div>
-				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>airlavillenie</label></div>
-				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>julienbenneteau</label></div>
-				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>nicolas88batum</label></div>
-				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>MATUIDIBlaise</label></div>
-				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>JrmeFernandez</label></div>
-				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>sebchabal</label></div>
-				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>NKARABATIC</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>Gael Monfils</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>Renaud Lavillenie</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>julien benneteau</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>Nicolas Batum</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>Blaise MATUIDI</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>Jérôme Fernandez</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>Sébastien Chabal</label></div>
+				<div class="filter"><label><input class="filter_tw" type="checkbox" name="checkbox" value="value" checked>NIKOLA KARABATIC</label></div>
 			</div>
 			<input id="applicate" type="button" value="Appliquer"></input>
 		</div>
@@ -220,11 +243,13 @@
 		<div id="links_gobot"><img src="{{ STATIC_URL }}flechebas.png" /></div>
 
 		<div id="news">
-			<div id="avai_news">0 Nouvelles Actus !</div>
+			<div id="avai_news">0 Nouvelle Actu !</div>
+			<img id="display_block" src="{{ STATIC_URL }}display-normal.png" />
+			<img id="display_line" src="{{ STATIC_URL }}display-line.png" />
 			<img id="img_refresh" src="{{ STATIC_URL }}refresh.png" />
 			{% for article in last_articles %}
 				{% if article.type == "Articles" %}
-				<a href="{{ article.lien }}">
+				<a href="{{ article.lien }}" target="_blank">
 					<div class="new" id="{{ article.id }}">
 						<div class="title-new">{{ article.titre }}</div>
 						<div class="origine-new"><div class="origine-name">{{ article.origine }}</div><img class="favicon" src="{{ STATIC_URL }}favicon/{{ article.origine }}.png"/></div>
@@ -239,6 +264,7 @@
 				</a>
 				{% endif %}
 				{% if article.type == "Twitter" %}
+				<a href="{{ article.lien }}" target="_blank">
 					<div class="new" id="{{ article.id }}">
 						<div class="title">{{ article.titre }}</div>
 						<div class="origine">{{ article.origine }}</div>
@@ -248,8 +274,10 @@
 						<div class="date-tw-new">{{ article.date|date:"H:i" }}</div>
 						<div class="bottom-tw-bar"></div>
 					</div>
+				</a>
 				{% endif %}
 				{% if article.type == "Facebook" %}
+				<a href="{{ article.lien }}" target="_blank">
 					<div class="new" id="{{ article.id }}">
 						<div class="title">{{ article.titre }}</div>
 						<div class="origine">{{ article.origine }}</div>
@@ -259,6 +287,7 @@
 						<div class="date-fb-new">{{ article.date|date:"H:i" }}</div>
 						<div class="bottom-fb-bar"></div>
 					</div>
+				</a>
 				{% endif %}
         	{% endfor %}
 		</div>

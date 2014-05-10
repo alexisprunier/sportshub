@@ -19,16 +19,19 @@ class Facebook:
         
         for article in list_art:
             try:
-                title = (article.find("title")).text
+                title = (article.find("title")).text\
+                            .replace("&#xe8;", u"è")\
+                            .replace("&#xe7;", u"ç")\
+                            .replace("&#xe9;", u"é")\
+                            .replace("&#039;", u"'")\
+                            .replace("&#x20ac;", u"€")\
+                            .replace("&#xe0;", u"à")
                 news_link = article.find("link").text
-
-                #BDD
                 bdd_article = Article(titre=title,
                                      origine=self.source,
                                      type="Facebook",
                                      lien=news_link,
                                      sport="")
-                
                 bdd_article.save()
             except Exception as e:
                 print "ERROR: " + str(e)
