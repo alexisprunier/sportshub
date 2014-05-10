@@ -1,0 +1,7 @@
+BeautifulSoup4
+MySQL-python==1.2.4
+python_oauth2==0.3.2
+tweepy==2.1
+python_twitter==1.1
+requests==2.2.1
+oauthlib==0.6.1
