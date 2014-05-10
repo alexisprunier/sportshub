@@ -1,0 +1,189 @@
+.new{
+	position: relative;
+	width: 300px;
+	height: 240px;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	background-color: white;
+	display: inline-block;
+	overflow: hidden;
+	background-color: #F3F3F3;
+}
+.img-new{	
+	margin-top: 52px;
+	position: absolute;
+	max-width: 300px;
+	max-height: 240px;
+	top: 0px;
+	z-index: 2;
+}
+.bottom-bar{
+	position: absolute;
+	width: 100%;
+	height: 8px;
+	background-color: #AAA;
+	bottom: 0px;
+	z-index: 3;
+}
+.bottom-fb-bar{
+	position: absolute;
+	width: 100%;
+	height: 8px;
+	background-color: #3B5998;
+	bottom: 0px;
+}
+.bottom-tw-bar{
+	position: absolute;
+	width: 100%;
+	height: 8px;
+	background-color: #00B4F2;
+	bottom: 0px;
+}
+.facebook-img{
+	position: absolute;
+	bottom: -50px;
+	right: 0px;
+	filter:alpha(opacity=20); 
+	-moz-opacity:0.2;
+	-khtml-opacity: 0.2;
+	opacity: 0.2;
+	width: 150px;
+}
+.twitter-img{
+	position: absolute;
+	bottom: -50px;
+	right: 0px;
+	filter:alpha(opacity=20); 
+	-moz-opacity:0.2;
+	-khtml-opacity: 0.2;
+	opacity: 0.2;
+	width: 150px;
+}
+.title{
+	width: 220px;
+	height: 120px;
+	margin: 25px 0 0 40px;
+	font-size: 16px;
+	text-align: center;
+	font-style: italic;
+	color: #222;
+	text-overflow: ellipsis;
+	z-index: 3;
+}
+.title-new{
+	font-family: arial;
+	font-size: 14px !important;
+	font-weight: bold;
+	padding-top: 3px;
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	height: 50px;
+	text-align: center;
+	color: #222;
+	overflow: hidden;
+	z-index: 3;
+}
+.origine{
+	font-family: arial;
+	width: 120px;
+	height: 30px;
+	margin: 30px 0 0 165px;
+	font-weight: bold;
+	font-size: 16px;
+	color: black;
+	z-index: 3;
+	text-align: center;
+}
+.origine-new{
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 40px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #444;
+	z-index: 3;
+	background-color: rgba(255,255,255,1);
+}
+.origine-name{
+	font-family: arial;
+	margin: 7px 0 0 180px;
+	font-size: 16px;
+	color: black;
+}
+.favicon{
+	position: absolute;
+	bottom: 15px;
+	left: 150px;
+	height: 20px;
+}
+.open-quote{
+	position: absolute;
+	top: 20px;
+	left: 10px;
+	width: 25px;
+}
+.close-quote{
+	position: absolute;
+	top: 20px;
+	right: 10px;
+	width: 25px;
+}
+.date-new{
+	font-family: "clock-font";
+	position: absolute;
+	top: 200px;
+	left: 30px;
+	font-size: 24px;
+	z-index: 3;
+	color: black;
+}
+.date-tw-new{
+	font-family: "clock-font";
+	position: absolute;
+	top: 175px;
+	left: 30px;
+	font-size: 40px;
+	color: #00B4F2;
+}
+.date-fb-new{
+	font-family: "clock-font";
+	position: absolute;
+	top: 175px;
+	left: 30px;
+	font-size: 40px;
+	color: #3B5998;
+}
+.Football{
+	background-color: #00CD03;
+	opacity: 0.7;
+}
+.Basketball{
+	background-color: #FE8300;
+	opacity: 0.7;
+}
+.Tennis{
+	background-color: #FFFD4D;
+	opacity: 0.7;
+}
+.Ski{
+	background-color: #91FFFF;
+	opacity: 0.7;
+}
+.Auto-Moto{
+	background-color: #FF0F0F;
+	opacity: 0.7;
+}
+.Rugby{
+	background-color: #B05806;
+	opacity: 0.7;
+}
+.Handball{
+	background-color: #FFBC00;
+	opacity: 0.7;
+}
+.Natation{
+	background-color: #006FFF;
+	opacity: 0.7;
+}
